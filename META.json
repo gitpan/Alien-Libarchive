@@ -33,6 +33,7 @@
       },
       "test" : {
          "requires" : {
+            "File::ShareDir" : "1.03",
             "Test::More" : "0"
          }
       }
@@ -49,6 +50,6 @@
          "web" : "https://github.com/plicease/alien-libarchive"
       }
    },
-   "version" : "0.04"
+   "version" : "0.05"
 }
 

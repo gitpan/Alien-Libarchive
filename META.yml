@@ -3,6 +3,7 @@ abstract: 'Build and make available libarchive'
 author:
   - 'Graham Ollis <plicease@cpan.org>'
 build_requires:
+  File::ShareDir: 1.03
   Test::More: 0
 configure_requires:
   Alien::Base: 0.002
@@ -22,4 +23,4 @@ resources:
   bugtracker: https://github.com/plicease/alien-libarchive/issues
   homepage: http://perl.wdlabs.com/Alien-Libarchive/
   repository: git://github.com/plicease/alien-libarchive.git
-version: 0.04
+version: 0.05

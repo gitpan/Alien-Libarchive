@@ -1,15 +1,18 @@
 NAME
+
     Alien::Libarchive - Build and make available libarchive
 
 VERSION
-    version 0.04
+
+    version 0.05
 
 SYNOPSIS
+
     Build.PL
 
      use Alien::Libarchive;
      use Module::Build;
- 
+     
      my $alien = Alien::Libarchive->new;
      my $build = Module::Build->new(
        ...
@@ -17,14 +20,14 @@ SYNOPSIS
        extra_linker_flags   => $alien->libs,
        ...
      );
- 
+     
      $build->create_build_script
 
     Makefile.PL
 
      use Alien::Libarchive;
      use ExtUtils::MakeMaker;
- 
+     
      my $alien = Alien::Libarchive->new;
      WriteMakefile(
        ...
@@ -36,10 +39,11 @@ SYNOPSIS
 
      use Alien::Libarchive;
      use FFI::Sweet qw( ffi_lib );
- 
+     
      ffi_lib(Alien::Libarchive->new->libs);
 
 DESCRIPTION
+
     This distribution installs libarchive so that it can be used by other
     Perl distributions. If already installed for your operating system, and
     if it can find it, this distribution will use the libarchive that comes
@@ -49,11 +53,13 @@ DESCRIPTION
     If you set the environment variable ALIEN_LIBARCHIVE to 'share', this
     distribution will ignore any system libarchive found, and build from
     source instead. This may be desirable if your operating system comes
-    with a very old version of libarchive and an upgrade path for the system
-    libarchive is not possible.
+    with a very old version of libarchive and an upgrade path for the
+    system libarchive is not possible.
 
-  Requirements
-   operating system install
+ Requirements
+
+  operating system install
+
     The development headers and libraries for libarchive
 
     On Debian you can install these with this command:
@@ -62,21 +68,26 @@ DESCRIPTION
 
     libarchive comes with FreeBSD as of version 5.3.
 
-   from source install
+  from source install
+
     A C compiler and any prerequisites for building libarchive.
 
 METHODS
-  cflags
+
+ cflags
+
     Returns the C compiler flags necessary to build against libarchive.
 
-  libs
+ libs
+
     Returns the library flags necessary to build against libarchive.
 
 CAVEATS
-    Native windows support is completely missing at the moment. It should in
-    theory be possible to install in a cygwin environment. However, I just
-    tried it and it did not work. Debian Linux and FreeBSD (9.0) have been
-    tested in development of this distribution.
+
+    Native windows support is completely missing at the moment. It should
+    in theory be possible to install in a cygwin environment. However, I
+    just tried it and it did not work. Debian Linux and FreeBSD (9.0) have
+    been tested in development of this distribution.
 
     Patches to improve portability and platform support would be eagerly
     appreciated.
@@ -85,13 +96,17 @@ CAVEATS
     distributions that depend on it as well.
 
 SEE ALSO
+
     Archive::Libarchive::XS
+
     Archive::Libarchive::FFI
 
 AUTHOR
+
     Graham Ollis <plicease@cpan.org>
 
 COPYRIGHT AND LICENSE
+
     This software is copyright (c) 2013 by Graham Ollis.
 
     This is free software; you can redistribute it and/or modify it under
