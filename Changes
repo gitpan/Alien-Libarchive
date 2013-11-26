@@ -1,0 +1,15 @@
+Revision history for Alien-Libarchive
+
+0.04      2013-11-26 12:05:20 -0500
+  - use Alien::OpenSSL and Alien::LibXML if available
+  - First CPAN release
+
+0.03      2013-11-20 12:46:58 -0500
+  - support for FreeBSD native build
+
+0.02      2013-11-15 10:55:29 -0500
+  - rm deps on Alien::OpenSSL, Alien::LibXML
+  - rm dep on Path::Class
+
+0.01      2013-11-14 17:07:12 -0500
+  - initial version

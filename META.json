@@ -1,0 +1,54 @@
+{
+   "abstract" : "Build and make available libarchive",
+   "author" : [
+      "Graham Ollis <plicease@cpan.org>"
+   ],
+   "dynamic_config" : 0,
+   "generated_by" : "Dist::Zilla version 5.006, CPAN::Meta::Converter version 2.132830",
+   "license" : [
+      "perl_5"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : "2"
+   },
+   "name" : "Alien-Libarchive",
+   "prereqs" : {
+      "configure" : {
+         "requires" : {
+            "Alien::Base" : "0.002",
+            "File::ShareDir" : "1.03"
+         },
+         "suggests" : {
+            "Alien::LibXML" : "0",
+            "Alien::OpenSSL" : "0.05"
+         }
+      },
+      "runtime" : {
+         "requires" : {
+            "Alien::Base" : "0.002",
+            "File::ShareDir" : "1.03",
+            "perl" : "5.006"
+         }
+      },
+      "test" : {
+         "requires" : {
+            "Test::More" : "0"
+         }
+      }
+   },
+   "release_status" : "stable",
+   "resources" : {
+      "bugtracker" : {
+         "web" : "https://github.com/plicease/alien-libarchive/issues"
+      },
+      "homepage" : "http://perl.wdlabs.com/Alien-Libarchive/",
+      "repository" : {
+         "type" : "git",
+         "url" : "git://github.com/plicease/alien-libarchive.git",
+         "web" : "https://github.com/plicease/alien-libarchive"
+      }
+   },
+   "version" : "0.04"
+}
+
