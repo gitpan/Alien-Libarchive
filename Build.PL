@@ -14,7 +14,7 @@ my %module_build_args = (
   "alien_repository" => {
     "host" => "www.libarchive.org",
     "location" => "/downloads/",
-    "pattern" => qr/(?^u:^libarchive-([\d\.]+)\.tar\.gz$)/,
+    "pattern" => qr/(^libarchive-([\d\.]+)\.tar\.gz$)/,
     "protocol" => "http"
   },
   "build_requires" => {},
@@ -27,7 +27,7 @@ my %module_build_args = (
     "Graham Ollis <plicease\@cpan.org>"
   ],
   "dist_name" => "Alien-Libarchive",
-  "dist_version" => "0.05",
+  "dist_version" => "0.06",
   "license" => "perl",
   "module_name" => "Alien::Libarchive",
   "recommends" => {},

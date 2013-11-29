@@ -6,7 +6,7 @@ use warnings;
 use base 'Alien::Base';
 
 # ABSTRACT: Build and make available libarchive
-our $VERSION = '0.05'; # VERSION
+our $VERSION = '0.06'; # VERSION
 
 
 # extract the macros from the header files, this is a private function
@@ -84,7 +84,7 @@ Alien::Libarchive - Build and make available libarchive
 
 =head1 VERSION
 
-version 0.05
+version 0.06
 
 =head1 SYNOPSIS
 
