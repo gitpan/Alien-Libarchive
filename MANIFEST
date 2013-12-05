@@ -11,6 +11,7 @@ dist.ini
 inc/Alien/Libarchive/ModuleBuild.pm
 inc/ModuleBuild.pm
 lib/Alien/Libarchive.pm
+lib/Alien/Libarchive/Unix.pm
 t/00_diag.t
 t/00_diag.txt
 t/01_diag.t

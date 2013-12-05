@@ -1,5 +1,10 @@
 Revision history for Alien-Libarchive
 
+0.07      2013-12-05 18:44:24 -0500
+  - prefer non-system lib when that is what you installed
+  - patch 3.1.2 on cygwin so that it will build
+  - Strawberry Perl support via Alien::Libarchive::MSWin32
+
 0.06      2013-11-29 10:02:22 -0500
   - support for perl 5.12, 5.10, 5.8
 

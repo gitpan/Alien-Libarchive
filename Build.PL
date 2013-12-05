@@ -7,6 +7,7 @@ use lib qw{inc}; use Alien::Libarchive::ModuleBuild;
 
 my %module_build_args = (
   "alien_build_commands" => [
+    "%x -I../../inc -MAlien::Libarchive::ModuleBuild -e alien_patch",
     "%pconfigure --prefix=%s --disable-bsdtar --disable-bsdcpio",
     "make"
   ],
@@ -27,7 +28,7 @@ my %module_build_args = (
     "Graham Ollis <plicease\@cpan.org>"
   ],
   "dist_name" => "Alien-Libarchive",
-  "dist_version" => "0.06",
+  "dist_version" => "0.07",
   "license" => "perl",
   "module_name" => "Alien::Libarchive",
   "recommends" => {},
@@ -35,6 +36,7 @@ my %module_build_args = (
   "requires" => {
     "Alien::Base" => "0.002",
     "File::ShareDir" => "1.03",
+    "Text::ParseWords" => 0,
     "perl" => "5.006"
   },
   "script_files" => [],
@@ -54,6 +56,10 @@ my %fallback_build_requires = (
 unless ( eval { Module::Build->VERSION(0.4004) } ) {
   delete $module_build_args{test_requires};
   $module_build_args{build_requires} = \%fallback_build_requires;
+}
+
+if ( $^O eq 'MSWin32' ) {
+	$module_build_args{requires}{'Alien::Libarchive::MSWin32'} = '0';
 }
 
 my $build = Alien::Libarchive::ModuleBuild->new(%module_build_args);

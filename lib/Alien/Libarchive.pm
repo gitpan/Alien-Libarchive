@@ -3,71 +3,23 @@ package Alien::Libarchive;
 use strict;
 use warnings;
 
-use base 'Alien::Base';
-
 # ABSTRACT: Build and make available libarchive
-our $VERSION = '0.06'; # VERSION
+our $VERSION = '0.07'; # VERSION
 
 
-# extract the macros from the header files, this is a private function
-# because it may not be portable.  Used by Archive::Libarchive::XS
-# (and maybe Archive::Libarchive::FFI) to automatically generate
-# constants
-# UPDATE: this maybe should use C::Scan or C::Scan::Constants
-sub _macro_list
+if($^O eq 'MSWin32')
 {
-  require Config;
-  require File::Temp;
-  require File::Spec;
-
-  my $alien = Alien::Libarchive->new;  
-  my $cc = "$Config::Config{ccname} $Config::Config{ccflags} " . $alien->cflags;
-  
-  my $fn = File::Spec->catfile(File::Temp::tempdir( CLEANUP => 1 ), "test.c");
-  
-  do {
-    open my $fh, '>', $fn;
-    print $fh "#include <archive.h>\n";
-    print $fh "#include <archive_entry.h>\n";
-    close $fh;
-  };
-  
-  my @list;
-  my $cmd = "$cc -E -dM $fn";
-  foreach my $line (`$cmd`)
+  eval q{ use Alien::Libarchive::MSWin32 };
+  die $@ if $@;
+  foreach my $subname (qw( new libs cflags ))
   {
-    if($line =~ /^#define ((AE|ARCHIVE)_\S+)/)
-    {
-      push @list, $1;
-    }
-  }
-  sort @list;
-}
-
-sub libs
-{
-  my($self) = @_;
-  if($self->install_type eq 'system' && $^O eq 'freebsd' && -e "/usr/include/archive.h" && -e "/usr/include/archive_entry.h")
-  {
-    return '-larchive';
-  }
-  else
-  {
-    return $self->SUPER::libs;
+    eval qq{ sub $subname { shift; Alien::Libarchive::MSWin32->$subname(\@_) } };
+    die $@ if $@;
   }
 }
-
-sub cflags
+else
 {
-  my($self) = @_;
-  if($self->install_type eq 'system' && $^O eq 'freebsd' && -e "/usr/include/archive.h" && -e "/usr/include/archive_entry.h")
-  {
-    return '';
-  }
-  else
-  {
-    return $self->SUPER::cflags;
-  }
+  require Alien::Libarchive::Unix;
 }
 
 1;
@@ -84,7 +36,7 @@ Alien::Libarchive - Build and make available libarchive
 
 =head1 VERSION
 
-version 0.06
+version 0.07
 
 =head1 SYNOPSIS
 
@@ -142,15 +94,65 @@ system libarchive is not possible.
 
 The development headers and libraries for libarchive
 
+=over 4
+
+=item Debian
+
 On Debian you can install these with this command:
 
  % sudo apt-get install libarchive-dev
 
+=item Cygwin
+
+On Cygwin, make sure that this package is installed
+
+ libarchive-devel
+
+=item FreeBSD
+
 libarchive comes with FreeBSD as of version 5.3.
+
+=back
 
 =head3 from source install
 
 A C compiler and any prerequisites for building libarchive.
+
+=over 4
+
+=item Debian
+
+On Debian build-essential should be good enough:
+
+ % sudo apt-get install build-essential
+
+=item Cygwin
+
+On Cygwin, I couldn't get libarchive to build without making a
+minor tweak to one of the include files.  On Cygwin this module
+will patch libarchive before it attempts to build if it is
+version 3.1.2.
+
+=item Strawberry Perl
+
+For MinGW based Perls (including Strawberry), this module will
+delegate to L<Alien::Libarchive::MSWin32>.  The reason for not
+supporting MinGW directly in this distribution is because it
+requires CMake and configure time, and I don't want to make
+that a prereq everywhere.
+
+Probably the easiest way to get this to work is to install
+CMake binaries from their website,
+
+=over 4
+
+=item L<http://www.cmake.org/cmake/resources/software.html>
+
+=back
+
+=back
+
+And then install L<Alien::CMake>.
 
 =head1 METHODS
 
@@ -164,10 +166,8 @@ Returns the library flags necessary to build against libarchive.
 
 =head1 CAVEATS
 
-Native windows support is completely missing at the moment.  It should
-in theory be possible to install in a cygwin environment.  However, I
-just tried it and it did not work.  Debian Linux and FreeBSD (9.0) have
-been tested in development of this distribution.
+Debian Linux and FreeBSD (9.0) have been tested the most
+in development of this distribution.
 
 Patches to improve portability and platform support would be eagerly
 appreciated.

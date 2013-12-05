@@ -4,7 +4,7 @@ NAME
 
 VERSION
 
-    version 0.06
+    version 0.07
 
 SYNOPSIS
 
@@ -62,15 +62,51 @@ DESCRIPTION
 
     The development headers and libraries for libarchive
 
-    On Debian you can install these with this command:
+    Debian
 
-     % sudo apt-get install libarchive-dev
+      On Debian you can install these with this command:
 
-    libarchive comes with FreeBSD as of version 5.3.
+       % sudo apt-get install libarchive-dev
+
+    Cygwin
+
+      On Cygwin, make sure that this package is installed
+
+       libarchive-devel
+
+    FreeBSD
+
+      libarchive comes with FreeBSD as of version 5.3.
 
   from source install
 
     A C compiler and any prerequisites for building libarchive.
+
+    Debian
+
+      On Debian build-essential should be good enough:
+
+       % sudo apt-get install build-essential
+
+    Cygwin
+
+      On Cygwin, I couldn't get libarchive to build without making a minor
+      tweak to one of the include files. On Cygwin this module will patch
+      libarchive before it attempts to build if it is version 3.1.2.
+
+    Strawberry Perl
+
+      For MinGW based Perls (including Strawberry), this module will
+      delegate to Alien::Libarchive::MSWin32. The reason for not supporting
+      MinGW directly in this distribution is because it requires CMake and
+      configure time, and I don't want to make that a prereq everywhere.
+
+      Probably the easiest way to get this to work is to install CMake
+      binaries from their website,
+
+      http://www.cmake.org/cmake/resources/software.html
+
+    And then install Alien::CMake.
 
 METHODS
 
@@ -84,10 +120,8 @@ METHODS
 
 CAVEATS
 
-    Native windows support is completely missing at the moment. It should
-    in theory be possible to install in a cygwin environment. However, I
-    just tried it and it did not work. Debian Linux and FreeBSD (9.0) have
-    been tested in development of this distribution.
+    Debian Linux and FreeBSD (9.0) have been tested the most in development
+    of this distribution.
 
     Patches to improve portability and platform support would be eagerly
     appreciated.

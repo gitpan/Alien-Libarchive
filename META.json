@@ -3,8 +3,8 @@
    "author" : [
       "Graham Ollis <plicease@cpan.org>"
    ],
-   "dynamic_config" : 0,
-   "generated_by" : "Dist::Zilla version 5.006, CPAN::Meta::Converter version 2.132830",
+   "dynamic_config" : 1,
+   "generated_by" : "Dist::Zilla version 5.006, CPAN::Meta::Converter version 2.133380",
    "license" : [
       "perl_5"
    ],
@@ -28,6 +28,7 @@
          "requires" : {
             "Alien::Base" : "0.002",
             "File::ShareDir" : "1.03",
+            "Text::ParseWords" : "0",
             "perl" : "5.006"
          }
       },
@@ -50,6 +51,6 @@
          "web" : "https://github.com/plicease/alien-libarchive"
       }
    },
-   "version" : "0.06"
+   "version" : "0.07"
 }
 
