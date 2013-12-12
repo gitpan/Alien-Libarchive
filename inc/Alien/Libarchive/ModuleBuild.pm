@@ -3,6 +3,7 @@ package Alien::Libarchive::ModuleBuild;
 use strict;
 use warnings;
 use base qw( Alien::Base::ModuleBuild );
+use FindBin ();
 
 sub new
 {
@@ -17,20 +18,30 @@ sub new
   }
 }
 
+my $cflags = '';
+my $libs   = '';
+  
 sub alien_do_commands
 {
   my($self, $phase) = @_;
 
-  local $ENV{CFLAGS} = $ENV{CFLAGS};
-  local $ENV{LIBS}   = $ENV{LIBS};
-  foreach my $name (qw( Alien::LibXML Alien::OpenSSL ))
+  unless($cflags)
   {
-    my $alien = eval q{ require $name; $name->new };
-    next if $@;
-    print "using $name";
-    $ENV{CFLAGS} .= ' ' . $alien->cflags;
-    $ENV{LIBS}   .= ' ' . $alien->libs;
+    my $first = 1;
+    foreach my $name (qw( Alien::LibXML Alien::OpenSSL Alien::bz2 ))
+    {
+      my $alien = eval qq{ require $name; $name->new };
+      next if $@;
+      print "\n\n" if $first; $first = 0;
+      print "  trying to use $name\n";
+      $cflags .= ' ' . $alien->cflags;
+      $libs   .= ' ' . $alien->libs;
+    }
+    print "\n\n" unless $first;
   }
+
+  local $ENV{CFLAGS} = $cflags;
+  local $ENV{LIBS}   = $libs;
   
   $self->SUPER::alien_do_commands($phase);
 }
@@ -52,6 +63,13 @@ sub alien_check_installed_version {
   }
 
   return $self->SUPER::alien_check_installed_version;
+}
+
+sub alien_interpolate
+{
+  my($self, $string) = @_;
+  $string =~ s/(?<!\%)\%d/$FindBin::Bin/eg;
+  $self->SUPER::alien_interpolate($string);
 }
 
 package

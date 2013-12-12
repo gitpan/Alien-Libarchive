@@ -9,7 +9,8 @@ my %module_build_args = (
   "alien_build_commands" => [
     "%x -I../../inc -MAlien::Libarchive::ModuleBuild -e alien_patch",
     "%pconfigure --prefix=%s --disable-bsdtar --disable-bsdcpio",
-    "make"
+    "make",
+    "make DESTDIR=%d/_test install"
   ],
   "alien_name" => "libarchive",
   "alien_repository" => {
@@ -28,7 +29,7 @@ my %module_build_args = (
     "Graham Ollis <plicease\@cpan.org>"
   ],
   "dist_name" => "Alien-Libarchive",
-  "dist_version" => "0.07",
+  "dist_version" => "0.08",
   "license" => "perl",
   "module_name" => "Alien::Libarchive",
   "recommends" => {},
@@ -41,14 +42,14 @@ my %module_build_args = (
   },
   "script_files" => [],
   "test_requires" => {
-    "File::ShareDir" => "1.03",
+    "Test::CChecker" => 0,
     "Test::More" => 0
   }
 );
 
 
 my %fallback_build_requires = (
-  "File::ShareDir" => "1.03",
+  "Test::CChecker" => 0,
   "Test::More" => 0
 );
 

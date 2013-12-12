@@ -21,7 +21,8 @@
          },
          "suggests" : {
             "Alien::LibXML" : "0",
-            "Alien::OpenSSL" : "0.05"
+            "Alien::OpenSSL" : "0.05",
+            "Alien::bz2" : "0"
          }
       },
       "runtime" : {
@@ -34,7 +35,7 @@
       },
       "test" : {
          "requires" : {
-            "File::ShareDir" : "1.03",
+            "Test::CChecker" : "0",
             "Test::More" : "0"
          }
       }
@@ -51,6 +52,6 @@
          "web" : "https://github.com/plicease/alien-libarchive"
       }
    },
-   "version" : "0.07"
+   "version" : "0.08"
 }
 

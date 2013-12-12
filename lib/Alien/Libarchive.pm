@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 # ABSTRACT: Build and make available libarchive
-our $VERSION = '0.07'; # VERSION
+our $VERSION = '0.08'; # VERSION
 
 
 if($^O eq 'MSWin32')
@@ -36,7 +36,7 @@ Alien::Libarchive - Build and make available libarchive
 
 =head1 VERSION
 
-version 0.07
+version 0.08
 
 =head1 SYNOPSIS
 
@@ -138,7 +138,7 @@ version 3.1.2.
 For MinGW based Perls (including Strawberry), this module will
 delegate to L<Alien::Libarchive::MSWin32>.  The reason for not
 supporting MinGW directly in this distribution is because it
-requires CMake and configure time, and I don't want to make
+requires CMake at configure time, and I don't want to make
 that a prereq everywhere.
 
 Probably the easiest way to get this to work is to install
@@ -150,9 +150,9 @@ CMake binaries from their website,
 
 =back
 
-=back
-
 And then install L<Alien::CMake>.
+
+=back
 
 =head1 METHODS
 

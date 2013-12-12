@@ -7,10 +7,11 @@ use strict;
 use warnings;
 use Text::ParseWords qw( shellwords );
 use base 'Alien::Base';
-
+use File::ShareDir ();
+use File::Spec;
 
 # ABSTRACT: Build and make available libarchive (machinery for Unix)
-our $VERSION = '0.07'; # VERSION
+our $VERSION = '0.08'; # VERSION
 
 
 # workaround for Alien::Base gh#30
@@ -23,6 +24,15 @@ sub import
     unshift @DynaLoader::dl_library_path, 
       grep { s/^-L// } 
       shellwords( $class->libs );
+    
+    if($^O eq 'cygwin')
+    {
+      foreach my $dir (map { File::Spec->catdir($class->dist_dir, $_) } qw( .libs bin ))
+      {
+        $ENV{PATH} = join(':', $dir, $ENV{PATH}) if -d $dir;
+      }
+    }
+
   }
   
   $class->SUPER::import(@_);
@@ -103,7 +113,7 @@ Alien::Libarchive::Unix - Build and make available libarchive (machinery for Uni
 
 =head1 VERSION
 
-version 0.07
+version 0.08
 
 =head1 SEE ALSO
 

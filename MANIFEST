@@ -15,6 +15,7 @@ lib/Alien/Libarchive/Unix.pm
 t/00_diag.t
 t/00_diag.txt
 t/01_diag.t
+t/basic.t
 t/use.t
 xt/release/build_environment.t
 xt/release/changes.t
