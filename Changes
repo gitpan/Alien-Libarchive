@@ -1,5 +1,9 @@
 Revision history for Alien-Libarchive
 
+0.09      2013-12-18 09:06:08 -0500
+  - verify Alien deps flags can at least compile a simple c program
+  - better detection of libarchive sans pkg-config as a system install
+
 0.08      2013-12-12 17:07:56 -0500
   - documentation
   - try to use Alien::bz2 if available

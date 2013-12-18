@@ -28,8 +28,9 @@
       "runtime" : {
          "requires" : {
             "Alien::Base" : "0.002",
+            "Capture::Tiny" : "0",
+            "ExtUtils::CChecker" : "0",
             "File::ShareDir" : "1.03",
-            "Text::ParseWords" : "0",
             "perl" : "5.006"
          }
       },
@@ -52,6 +53,6 @@
          "web" : "https://github.com/plicease/alien-libarchive"
       }
    },
-   "version" : "0.08"
+   "version" : "0.09"
 }
 

@@ -11,7 +11,7 @@ use File::ShareDir ();
 use File::Spec;
 
 # ABSTRACT: Build and make available libarchive (machinery for Unix)
-our $VERSION = '0.08'; # VERSION
+our $VERSION = '0.09'; # VERSION
 
 
 # workaround for Alien::Base gh#30
@@ -113,7 +113,7 @@ Alien::Libarchive::Unix - Build and make available libarchive (machinery for Uni
 
 =head1 VERSION
 
-version 0.08
+version 0.09
 
 =head1 SEE ALSO
 

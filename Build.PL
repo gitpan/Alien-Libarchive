@@ -29,15 +29,16 @@ my %module_build_args = (
     "Graham Ollis <plicease\@cpan.org>"
   ],
   "dist_name" => "Alien-Libarchive",
-  "dist_version" => "0.08",
+  "dist_version" => "0.09",
   "license" => "perl",
   "module_name" => "Alien::Libarchive",
   "recommends" => {},
   "recursive_test_files" => 1,
   "requires" => {
     "Alien::Base" => "0.002",
+    "Capture::Tiny" => 0,
+    "ExtUtils::CChecker" => 0,
     "File::ShareDir" => "1.03",
-    "Text::ParseWords" => 0,
     "perl" => "5.006"
   },
   "script_files" => [],
