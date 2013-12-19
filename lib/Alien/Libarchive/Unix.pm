@@ -11,7 +11,7 @@ use File::ShareDir ();
 use File::Spec;
 
 # ABSTRACT: Build and make available libarchive (machinery for Unix)
-our $VERSION = '0.09'; # VERSION
+our $VERSION = '0.10'; # VERSION
 
 
 # workaround for Alien::Base gh#30
@@ -75,28 +75,20 @@ sub _macro_list
 
 sub libs
 {
-  my($self) = @_;
-  if($self->install_type eq 'system' && $^O eq 'freebsd' && -e "/usr/include/archive.h" && -e "/usr/include/archive_entry.h")
-  {
-    return '-larchive';
-  }
+  my $self = shift;
+  if($self->config('system_no_pkg_config'))
+  {  return '-larchive' }
   else
-  {
-    return $self->SUPER::libs;
-  }
+  { return $self->SUPER::libs }
 }
 
 sub cflags
 {
-  my($self) = @_;
-  if($self->install_type eq 'system' && $^O eq 'freebsd' && -e "/usr/include/archive.h" && -e "/usr/include/archive_entry.h")
-  {
-    return '';
-  }
+  my $self = shift;
+  if($self->config('system_no_pkg_config'))
+  { return '' }
   else
-  {
-    return $self->SUPER::cflags;
-  }
+  { return $self->SUPER::cflags }
 }
 
 1;
@@ -113,7 +105,7 @@ Alien::Libarchive::Unix - Build and make available libarchive (machinery for Uni
 
 =head1 VERSION
 
-version 0.09
+version 0.10
 
 =head1 SEE ALSO
 
