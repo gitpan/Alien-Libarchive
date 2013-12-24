@@ -29,7 +29,7 @@ my %module_build_args = (
     "Graham Ollis <plicease\@cpan.org>"
   ],
   "dist_name" => "Alien-Libarchive",
-  "dist_version" => "0.10",
+  "dist_version" => "0.11",
   "license" => "perl",
   "module_name" => "Alien::Libarchive",
   "recommends" => {},
@@ -61,7 +61,7 @@ unless ( eval { Module::Build->VERSION(0.4004) } ) {
 }
 
 if ( $^O eq 'MSWin32' ) {
-	$module_build_args{requires}{'Alien::Libarchive::MSWin32'} = '0';
+	$module_build_args{requires}{'Alien::Libarchive::MSWin32'} = '0.02';
 }
 
 my $build = Alien::Libarchive::ModuleBuild->new(%module_build_args);

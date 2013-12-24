@@ -25,4 +25,4 @@ resources:
   bugtracker: https://github.com/plicease/alien-libarchive/issues
   homepage: http://perl.wdlabs.com/Alien-Libarchive/
   repository: git://github.com/plicease/alien-libarchive.git
-version: 0.10
+version: 0.11
