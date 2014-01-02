@@ -11,7 +11,7 @@ use File::ShareDir ();
 use File::Spec;
 
 # ABSTRACT: Build and make available libarchive (machinery for Unix)
-our $VERSION = '0.11'; # VERSION
+our $VERSION = '0.12'; # VERSION
 
 
 # workaround for Alien::Base gh#30
@@ -105,7 +105,7 @@ Alien::Libarchive::Unix - Build and make available libarchive (machinery for Uni
 
 =head1 VERSION
 
-version 0.11
+version 0.12
 
 =head1 SEE ALSO
 
@@ -123,7 +123,7 @@ Graham Ollis <plicease@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2013 by Graham Ollis.
+This software is copyright (c) 2014 by Graham Ollis.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
