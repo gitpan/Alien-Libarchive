@@ -23,6 +23,7 @@ my %module_build_args = (
   "build_requires" => {},
   "configure_requires" => {
     "Alien::Base" => "0.002",
+    "ExtUtils::CChecker" => 0,
     "File::ShareDir" => "1.03"
   },
   "dist_abstract" => "Build and make available libarchive",
@@ -30,7 +31,7 @@ my %module_build_args = (
     "Graham Ollis <plicease\@cpan.org>"
   ],
   "dist_name" => "Alien-Libarchive",
-  "dist_version" => "0.14",
+  "dist_version" => "0.15",
   "license" => "perl",
   "module_name" => "Alien::Libarchive",
   "recommends" => {},
@@ -38,7 +39,6 @@ my %module_build_args = (
   "requires" => {
     "Alien::Base" => "0.002",
     "Capture::Tiny" => 0,
-    "ExtUtils::CChecker" => 0,
     "File::ShareDir" => "1.03",
     "perl" => "5.006"
   },
