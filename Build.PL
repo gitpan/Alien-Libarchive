@@ -4,11 +4,11 @@ use strict;
 use warnings;
 
 use Module::Build 0.3601;
-use lib qw{inc}; use Alien::Libarchive::ModuleBuild;
+use lib qw{inc}; use My::ModuleBuild;
 
 my %module_build_args = (
   "alien_build_commands" => [
-    "%x -I../../inc -MAlien::Libarchive::ModuleBuild -e alien_patch",
+    "%x -I../../inc -MMy::ModuleBuild -e alien_patch",
     "%pconfigure --prefix=%s --disable-bsdtar --disable-bsdcpio",
     "make",
     "make DESTDIR=%d/_test install"
@@ -31,7 +31,7 @@ my %module_build_args = (
     "Graham Ollis <plicease\@cpan.org>"
   ],
   "dist_name" => "Alien-Libarchive",
-  "dist_version" => "0.15",
+  "dist_version" => "0.16",
   "license" => "perl",
   "module_name" => "Alien::Libarchive",
   "recommends" => {},
@@ -65,6 +65,6 @@ if ( $^O eq 'MSWin32' ) {
 	$module_build_args{requires}{'Alien::Libarchive::MSWin32'} = '0.04';
 }
 
-my $build = Alien::Libarchive::ModuleBuild->new(%module_build_args);
+my $build = My::ModuleBuild->new(%module_build_args);
 
 $build->create_build_script;
