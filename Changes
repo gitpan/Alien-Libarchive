@@ -1,5 +1,9 @@
 Revision history for Alien-Libarchive
 
+0.17      2014-02-03 16:37:39 -0500
+  - remove -fPIC / -fno-common detection and instead rely on $Config{cccdlflags}
+  - use $Config{optimize} for CFLAGS passed to libarchive configure
+
 0.16      2014-02-02 04:30:52 -0500
   - build with -fPIC if possible
 
