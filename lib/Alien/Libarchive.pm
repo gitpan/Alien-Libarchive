@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 # ABSTRACT: Build and make available libarchive
-our $VERSION = '0.17'; # VERSION
+our $VERSION = '0.18'; # VERSION
 
 
 if($^O eq 'MSWin32')
@@ -36,7 +36,7 @@ Alien::Libarchive - Build and make available libarchive
 
 =head1 VERSION
 
-version 0.17
+version 0.18
 
 =head1 SYNOPSIS
 

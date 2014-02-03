@@ -1,5 +1,8 @@
 Revision history for Alien-Libarchive
 
+0.18      2014-02-03 16:40:43 -0500
+  - Fix ExtUtils::CChecker calling error
+
 0.17      2014-02-03 16:37:39 -0500
   - remove -fPIC / -fno-common detection and instead rely on $Config{cccdlflags}
   - use $Config{optimize} for CFLAGS passed to libarchive configure
