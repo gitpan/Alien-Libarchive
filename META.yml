@@ -19,10 +19,9 @@ name: Alien-Libarchive
 requires:
   Alien::Libarchive::Installer: '0.03'
   File::ShareDir: '0'
-  base: '0'
   perl: '5.006'
 resources:
   bugtracker: https://github.com/plicease/Alien-Libarchive2/issues
   homepage: http://perl.wdlabs.com/Alien-Libarchive
   repository: git://github.com/plicease/Alien-Libarchive2.git
-version: 0.18_05
+version: 0.18_06

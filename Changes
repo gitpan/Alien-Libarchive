@@ -1,5 +1,8 @@
 Revision history for Alien-Libarchive
 
+0.18_06   2014-06-10 10:39:36 -0400
+  - Archive::Libarchive::XS dev compat
+
 0.18_05   2014-06-10 10:19:42 -0400
   - require Alien::Libarchive::Installer 0.03
 

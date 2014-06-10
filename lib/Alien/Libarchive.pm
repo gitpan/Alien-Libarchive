@@ -9,7 +9,7 @@ use constant _share_dir => File::ShareDir::dist_dir('Alien-Libarchive');
 use constant _alien_libarchive019 => 1;
 
 # ABSTRACT: Build and make available libarchive
-our $VERSION = '0.18_05'; # VERSION
+our $VERSION = '0.18_06'; # VERSION
 
 my $cf = 'Alien::Libarchive::ConfigData';
 
@@ -92,6 +92,41 @@ sub install_type
   $cf->config("install_type");
 }
 
+# extract the macros from the header files, this is a private function
+# because it may not be portable.  Used by the Archive::Libarchive::XS
+# build process (and maybe Archive::Libarchive::FFI) to automatically
+# generate constants
+# UPDATE: this maybe should use C::Scan or C::Scan::Constants
+sub _macro_list
+{
+  require Config;
+  require File::Temp;
+  require File::Spec;
+
+  my $alien = Alien::Libarchive->new;
+  my $cc = "$Config::Config{ccname} $Config::Config{ccflags} " . $alien->cflags;
+
+  my $fn = File::Spec->catfile(File::Temp::tempdir( CLEANUP => 1 ), "test.c");
+
+  do {
+    open my $fh, '>', $fn;
+    print $fh "#include <archive.h>\n";
+    print $fh "#include <archive_entry.h>\n";
+    close $fh;
+  };
+
+  my @list;
+  my $cmd = "$cc -E -dM $fn";
+  foreach my $line (`$cmd`)
+  {
+    if($line =~ /^#define ((AE|ARCHIVE)_\S+)/)
+    {
+      push @list, $1;
+    }
+  }
+  sort @list;
+}
+
 
 1;
 
@@ -107,7 +142,7 @@ Alien::Libarchive - Build and make available libarchive
 
 =head1 VERSION
 
-version 0.18_05
+version 0.18_06
 
 =head1 SYNOPSIS
 

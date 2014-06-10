@@ -20,7 +20,7 @@ my %module_build_args = (
     "Graham Ollis <plicease\@cpan.org>"
   ],
   "dist_name" => "Alien-Libarchive",
-  "dist_version" => "0.18_05",
+  "dist_version" => "0.18_06",
   "license" => "perl",
   "module_name" => "Alien::Libarchive",
   "recommends" => {},
@@ -28,7 +28,6 @@ my %module_build_args = (
   "requires" => {
     "Alien::Libarchive::Installer" => "0.03",
     "File::ShareDir" => 0,
-    "base" => 0,
     "perl" => "5.006"
   },
   "script_files" => [],
