@@ -16,17 +16,19 @@
    "prereqs" : {
       "build" : {
          "requires" : {
+            "Alien::Libarchive::Installer" : "0.03",
             "Module::Build" : "0.3601"
          }
       },
       "configure" : {
          "requires" : {
+            "Alien::Libarchive::Installer" : "0.03",
             "Module::Build" : "0.3601"
          }
       },
       "runtime" : {
          "requires" : {
-            "Alien::Libarchive::Installer" : "0.02",
+            "Alien::Libarchive::Installer" : "0.03",
             "File::ShareDir" : "0",
             "base" : "0",
             "perl" : "5.006"
@@ -50,6 +52,6 @@
          "web" : "https://github.com/plicease/Alien-Libarchive2"
       }
    },
-   "version" : "0.18_01"
+   "version" : "0.18_05"
 }
 

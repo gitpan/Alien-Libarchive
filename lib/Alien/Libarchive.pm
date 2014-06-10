@@ -6,9 +6,10 @@ use File::ShareDir ();
 use File::Spec;
 use Alien::Libarchive::ConfigData;
 use constant _share_dir => File::ShareDir::dist_dir('Alien-Libarchive');
+use constant _alien_libarchive019 => 1;
 
 # ABSTRACT: Build and make available libarchive
-our $VERSION = '0.18_01'; # VERSION
+our $VERSION = '0.18_05'; # VERSION
 
 my $cf = 'Alien::Libarchive::ConfigData';
 
@@ -38,7 +39,7 @@ sub cflags
   my @cflags = @{ $cf->config("cflags") };
   unshift @cflags, '-I' . _catdir(_share_dir, 'libarchive019', 'include' )
     if $class->install_type eq 'share';
-  @cflags;
+  wantarray ? @cflags : "@cflags";
 }
 
 
@@ -58,7 +59,7 @@ sub libs
       unshift @libs, '-L' . _catdir(_share_dir, 'libarchive019', 'lib');
     }
   }
-  @libs;
+  wantarray ? @libs : "@libs";
 }
 
 
@@ -78,10 +79,11 @@ sub dlls
             map { _catfile(_share_dir, 'libarchive019', 'dll', $_) }
             grep { /\.so/ || /\.(dll|dylib)$/ }
             grep !/^\./,
+            sort
             readdir $dh;
     closedir $dh;
   }
-  @list;
+  wantarray ? @list : $list[0];
 }
 
 
@@ -105,7 +107,7 @@ Alien::Libarchive - Build and make available libarchive
 
 =head1 VERSION
 
-version 0.18_01
+version 0.18_05
 
 =head1 SYNOPSIS
 
@@ -219,14 +221,22 @@ version 3.1.2.
 
 Returns the C compiler flags necessary to build against libarchive.
 
+Returns flags as a list in list context and combined into a string in
+scalar context.
+
 =head2 libs
 
 Returns the library flags necessary to build against libarchive.
+
+Returns flags as a list in list context and combined into a string in
+scalar context.
 
 =head2 dlls
 
 Returns a list of dynamic libraries (usually a list of just one library)
 that make up libarchive.  This can be used for L<FFI::Raw>.
+
+Returns just the first dynamic library found in scalar context.
 
 =head2 install_type
 

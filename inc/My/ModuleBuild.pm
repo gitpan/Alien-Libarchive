@@ -16,6 +16,11 @@ my $type = eval { require FFI::Raw } ? 'both' : 'compile';
 #    the static version will be used for XS modules and the shared one
 #    will be used for FFI modules.
 
+sub _list ($)
+{
+  ref($_[0]) eq 'ARRAY' ? $_[0] : [$_[0]];
+}
+
 sub new
 {
   my($class, %args) = @_;
@@ -37,7 +42,7 @@ sub new
     my $prereqs = Alien::Libarchive::Installer->build_requires;  
     while(my($mod,$ver) = each %$prereqs)
     {
-      $args{requires}->{$mod} = $ver;
+      $args{build_requires}->{$mod} = $ver;
     }
   }
 
@@ -54,8 +59,8 @@ sub new
     print "Found libarchive " . $system->version . " from system\n";
     print "You can set ALIEN_LIBARCHIVE=share to force building from source\n";
     $self->config_data( install_type => 'system' );
-    $self->config_data( cflags       => $system->cflags );
-    $self->config_data( libs         => $system->libs );
+    $self->config_data( cflags       => _list $system->cflags );
+    $self->config_data( libs         => _list $system->libs );
   }
   else
   {
@@ -79,11 +84,11 @@ sub ACTION_build
       my $prefix = File::Spec->catdir($FindBin::Bin, 'share', 'libarchive019' );
       mkdir $prefix unless -d $prefix;
       my $build = Alien::Libarchive::Installer->build_install( $prefix, dir => $build_dir );
-      $self->config_data( cflags => [grep !/^-I/, @{ $build->cflags }] );
-      $self->config_data( libs =>   [grep !/^-L/, @{ $build->libs }] );
+      $self->config_data( cflags => [grep !/^-I/, @{ _list $build->cflags }] );
+      $self->config_data( libs =>   [grep !/^-L/, @{ _list $build->libs }] );
       if($self->config_data('msvc'))
       {
-        $self->config_data( libs =>   [grep !/^(\/|-)libpath/i, @{ $build->libs }] );
+        $self->config_data( libs =>   [grep !/^(\/|-)libpath/i, @{ _list $build->libs }] );
       }
       $self->config_data( already_built => 1 );
     }

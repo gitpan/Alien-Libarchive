@@ -8,9 +8,11 @@ use lib qw{inc}; use My::ModuleBuild;
 
 my %module_build_args = (
   "build_requires" => {
+    "Alien::Libarchive::Installer" => "0.03",
     "Module::Build" => "0.3601"
   },
   "configure_requires" => {
+    "Alien::Libarchive::Installer" => "0.03",
     "Module::Build" => "0.3601"
   },
   "dist_abstract" => "Build and make available libarchive",
@@ -18,13 +20,13 @@ my %module_build_args = (
     "Graham Ollis <plicease\@cpan.org>"
   ],
   "dist_name" => "Alien-Libarchive",
-  "dist_version" => "0.18_01",
+  "dist_version" => "0.18_05",
   "license" => "perl",
   "module_name" => "Alien::Libarchive",
   "recommends" => {},
   "recursive_test_files" => 1,
   "requires" => {
-    "Alien::Libarchive::Installer" => "0.02",
+    "Alien::Libarchive::Installer" => "0.03",
     "File::ShareDir" => 0,
     "base" => 0,
     "perl" => "5.006"
@@ -40,6 +42,7 @@ my %module_build_args = (
 
 
 my %fallback_build_requires = (
+  "Alien::Libarchive::Installer" => "0.03",
   "Module::Build" => "0.3601",
   "Test::More" => 0
 );
