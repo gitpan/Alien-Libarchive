@@ -1,10 +1,10 @@
-package Alien::Libarchive::Unix;
+package Alien::Libarchive::MSWin32;
 
 use strict;
 use warnings;
 use base qw( Alien::Libarchive );
 
-# ABSTRACT: Build and make available libarchive on Unix
+# ABSTRACT: Build and make available libarchive on Windows
 our $VERSION = '0.18_01'; # VERSION
 
 
@@ -18,7 +18,7 @@ __END__
 
 =head1 NAME
 
-Alien::Libarchive::Unix - Build and make available libarchive on Unix
+Alien::Libarchive::MSWin32 - Build and make available libarchive on Windows
 
 =head1 VERSION
 

@@ -2,25 +2,94 @@ package Alien::Libarchive;
 
 use strict;
 use warnings;
+use File::ShareDir ();
+use File::Spec;
+use Alien::Libarchive::ConfigData;
+use constant _share_dir => File::ShareDir::dist_dir('Alien-Libarchive');
 
 # ABSTRACT: Build and make available libarchive
-our $VERSION = '0.18'; # VERSION
+our $VERSION = '0.18_01'; # VERSION
+
+my $cf = 'Alien::Libarchive::ConfigData';
+
+sub _catfile {
+  my $path = File::Spec->catfile(@_);
+  $path =~ s{\\}{/}g if $^O eq 'MSWin32';
+  $path;
+}
+
+sub _catdir {
+  my $path = File::Spec->catdir(@_);
+  $path =~ s{\\}{/}g if $^O eq 'MSWin32';
+  $path;
+}
 
 
-if($^O eq 'MSWin32')
+sub new
 {
-  eval q{ use Alien::Libarchive::MSWin32 };
-  die $@ if $@;
-  foreach my $subname (qw( new libs cflags ))
+  my($class) = @_;
+  bless {}, $class;
+}
+
+
+sub cflags
+{
+  my($class) = @_;
+  my @cflags = @{ $cf->config("cflags") };
+  unshift @cflags, '-I' . _catdir(_share_dir, 'libarchive019', 'include' )
+    if $class->install_type eq 'share';
+  @cflags;
+}
+
+
+sub libs
+{
+  my($class) = @_;
+  my @libs = @{ $cf->config("libs") };
+  if($class->install_type eq 'share')
   {
-    eval qq{ sub $subname { shift; Alien::Libarchive::MSWin32->$subname(\@_) } };
-    die $@ if $@;
+    if($cf->config('msvc'))
+    {
+      unshift @libs, '/libpath:' . _catdir(_share_dir, 'libarchive019', 'lib');
+      @libs = map { s{^.*(\\|/)}{} if m/archive_static\.lib$/; $_ } @libs;
+    }
+    else
+    {
+      unshift @libs, '-L' . _catdir(_share_dir, 'libarchive019', 'lib');
+    }
   }
+  @libs;
 }
-else
+
+
+sub dlls
 {
-  require Alien::Libarchive::Unix;
+  my($class) = @_;
+  my @list;
+  if($class->install_type eq 'system')
+  {
+    require Alien::Libarchive::Installer;
+    @list = Alien::Libarchive::Installer->system_install->dlls;
+  }
+  else
+  {
+    opendir(my $dh, _catdir(_share_dir, 'libarchive019', 'dll'));
+    @list = grep { ! -l $_ }
+            map { _catfile(_share_dir, 'libarchive019', 'dll', $_) }
+            grep { /\.so/ || /\.(dll|dylib)$/ }
+            grep !/^\./,
+            readdir $dh;
+    closedir $dh;
+  }
+  @list;
 }
+
+
+sub install_type
+{
+  $cf->config("install_type");
+}
+
 
 1;
 
@@ -36,7 +105,7 @@ Alien::Libarchive - Build and make available libarchive
 
 =head1 VERSION
 
-version 0.18
+version 0.18_01
 
 =head1 SYNOPSIS
 
@@ -53,34 +122,43 @@ Build.PL
    ...
  );
  
- $build->create_build_script
+ $build->create_build_script;
 
 Makefile.PL
 
  use Alien::Libarchive;
  use ExtUtils::MakeMaker;
  
- my $alien = Alien::Libarchive->new;
+ my $alien = Alien::Libarchive;
  WriteMakefile(
    ...
-   CFLAGS => Alien::Libarchive->cflags,
-   LIBS   => Alien::Libarchive->libs,
+   CFLAGS => $alien->cflags,
+   LIBS   => $alien->libs,
  );
 
-FFI
+FFI::Raw
 
  use Alien::Libarchive;
- use FFI::Sweet qw( ffi_lib );
+ use FFI::Raw;
  
- ffi_lib(Alien::Libarchive->new->libs);
+ my($dll) = Alien::Libarchive->new->dlls;
+ FFI::Raw->new($dll, 'archive_read_new', FFI::Raw::ptr);
+
+FFI::Sweet
+
+ use Alien::Libarchive;
+ use FFI::Sweet;
+ 
+ ffi_lib( Alien::Libarchive->new->dlls );
+ attach_function 'archive_read_new', [], _ptr;
 
 =head1 DESCRIPTION
 
-This distribution installs libarchive so that it can be used by other
-Perl distributions.  If already installed for your operating system, and
-if it can find it, this distribution will use the libarchive that comes
-with your operating system, otherwise it will download it from the 
-Internet, build and install it.
+This distribution installs libarchive so that it can be used by other Perl
+distributions.  If already installed for your operating system, and it can
+be found, this distribution will use the libarchive that comes with your
+operating system, otherwise it will download it from the internet, build
+and install it.
 
 If you set the environment variable ALIEN_LIBARCHIVE to 'share', this
 distribution will ignore any system libarchive found, and build from
@@ -133,25 +211,6 @@ minor tweak to one of the include files.  On Cygwin this module
 will patch libarchive before it attempts to build if it is
 version 3.1.2.
 
-=item Strawberry Perl
-
-For MinGW based Perls (including Strawberry), this module will
-delegate to L<Alien::Libarchive::MSWin32>.  The reason for not
-supporting MinGW directly in this distribution is because it
-requires CMake at configure time, and I don't want to make
-that a prereq everywhere.
-
-Probably the easiest way to get this to work is to install
-CMake binaries from their website,
-
-=over 4
-
-=item L<http://www.cmake.org/cmake/resources/software.html>
-
-=back
-
-And then install L<Alien::CMake>.
-
 =back
 
 =head1 METHODS
@@ -163,6 +222,15 @@ Returns the C compiler flags necessary to build against libarchive.
 =head2 libs
 
 Returns the library flags necessary to build against libarchive.
+
+=head2 dlls
+
+Returns a list of dynamic libraries (usually a list of just one library)
+that make up libarchive.  This can be used for L<FFI::Raw>.
+
+=head2 install_type
+
+Returns the install type, one of either C<system> or C<share>.
 
 =head1 CAVEATS
 
@@ -179,9 +247,19 @@ distributions that depend on it as well.
 
 =over 4
 
+=item L<Alien::Libarchive::Installer>
+
 =item L<Archive::Libarchive::XS>
 
 =item L<Archive::Libarchive::FFI>
+
+=item L<Archive::Libarchive::Any>
+
+=item L<Archive::Ar::Libarchive>
+
+=item L<Archive::Peek::Libarchive>
+
+=item L<Archive::Extract::Libarchive>
 
 =back
 

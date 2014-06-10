@@ -4,7 +4,7 @@ NAME
 
 VERSION
 
-    version 0.18
+    version 0.18_01
 
 SYNOPSIS
 
@@ -21,34 +21,43 @@ SYNOPSIS
        ...
      );
      
-     $build->create_build_script
+     $build->create_build_script;
 
     Makefile.PL
 
      use Alien::Libarchive;
      use ExtUtils::MakeMaker;
      
-     my $alien = Alien::Libarchive->new;
+     my $alien = Alien::Libarchive;
      WriteMakefile(
        ...
-       CFLAGS => Alien::Libarchive->cflags,
-       LIBS   => Alien::Libarchive->libs,
+       CFLAGS => $alien->cflags,
+       LIBS   => $alien->libs,
      );
 
-    FFI
+    FFI::Raw
 
      use Alien::Libarchive;
-     use FFI::Sweet qw( ffi_lib );
+     use FFI::Raw;
      
-     ffi_lib(Alien::Libarchive->new->libs);
+     my($dll) = Alien::Libarchive->new->dlls;
+     FFI::Raw->new($dll, 'archive_read_new', FFI::Raw::ptr);
+
+    FFI::Sweet
+
+     use Alien::Libarchive;
+     use FFI::Sweet;
+     
+     ffi_lib( Alien::Libarchive->new->dlls );
+     attach_function 'archive_read_new', [], _ptr;
 
 DESCRIPTION
 
     This distribution installs libarchive so that it can be used by other
     Perl distributions. If already installed for your operating system, and
-    if it can find it, this distribution will use the libarchive that comes
+    it can be found, this distribution will use the libarchive that comes
     with your operating system, otherwise it will download it from the
-    Internet, build and install it.
+    internet, build and install it.
 
     If you set the environment variable ALIEN_LIBARCHIVE to 'share', this
     distribution will ignore any system libarchive found, and build from
@@ -94,20 +103,6 @@ DESCRIPTION
       tweak to one of the include files. On Cygwin this module will patch
       libarchive before it attempts to build if it is version 3.1.2.
 
-    Strawberry Perl
-
-      For MinGW based Perls (including Strawberry), this module will
-      delegate to Alien::Libarchive::MSWin32. The reason for not supporting
-      MinGW directly in this distribution is because it requires CMake at
-      configure time, and I don't want to make that a prereq everywhere.
-
-      Probably the easiest way to get this to work is to install CMake
-      binaries from their website,
-
-      http://www.cmake.org/cmake/resources/software.html
-
-      And then install Alien::CMake.
-
 METHODS
 
  cflags
@@ -117,6 +112,15 @@ METHODS
  libs
 
     Returns the library flags necessary to build against libarchive.
+
+ dlls
+
+    Returns a list of dynamic libraries (usually a list of just one
+    library) that make up libarchive. This can be used for FFI::Raw.
+
+ install_type
+
+    Returns the install type, one of either system or share.
 
 CAVEATS
 
@@ -131,9 +135,19 @@ CAVEATS
 
 SEE ALSO
 
+    Alien::Libarchive::Installer
+
     Archive::Libarchive::XS
 
     Archive::Libarchive::FFI
+
+    Archive::Libarchive::Any
+
+    Archive::Ar::Libarchive
+
+    Archive::Peek::Libarchive
+
+    Archive::Extract::Libarchive
 
 AUTHOR
 

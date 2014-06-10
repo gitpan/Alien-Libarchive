@@ -3,8 +3,8 @@
    "author" : [
       "Graham Ollis <plicease@cpan.org>"
    ],
-   "dynamic_config" : 1,
-   "generated_by" : "Dist::Zilla version 5.012, CPAN::Meta::Converter version 2.133380",
+   "dynamic_config" : 0,
+   "generated_by" : "Dist::Zilla version 5.019, CPAN::Meta::Converter version 2.141170",
    "license" : [
       "perl_5"
    ],
@@ -14,45 +14,42 @@
    },
    "name" : "Alien-Libarchive",
    "prereqs" : {
+      "build" : {
+         "requires" : {
+            "Module::Build" : "0.3601"
+         }
+      },
       "configure" : {
          "requires" : {
-            "Alien::Base" : "0.002",
-            "ExtUtils::CChecker" : "0",
-            "File::ShareDir" : "1.03"
-         },
-         "suggests" : {
-            "Alien::LibXML" : "0",
-            "Alien::OpenSSL" : "0.05",
-            "Alien::bz2" : "0"
+            "Module::Build" : "0.3601"
          }
       },
       "runtime" : {
          "requires" : {
-            "Alien::Base" : "0.002",
-            "Capture::Tiny" : "0",
-            "File::ShareDir" : "1.03",
+            "Alien::Libarchive::Installer" : "0.02",
+            "File::ShareDir" : "0",
+            "base" : "0",
             "perl" : "5.006"
          }
       },
       "test" : {
          "requires" : {
-            "Test::CChecker" : "0",
             "Test::More" : "0"
          }
       }
    },
-   "release_status" : "stable",
+   "release_status" : "testing",
    "resources" : {
       "bugtracker" : {
-         "web" : "https://github.com/plicease/alien-libarchive/issues"
+         "web" : "https://github.com/plicease/Alien-Libarchive2/issues"
       },
-      "homepage" : "http://perl.wdlabs.com/Alien-Libarchive/",
+      "homepage" : "http://perl.wdlabs.com/Alien-Libarchive",
       "repository" : {
          "type" : "git",
-         "url" : "git://github.com/plicease/alien-libarchive.git",
-         "web" : "https://github.com/plicease/alien-libarchive"
+         "url" : "git://github.com/plicease/Alien-Libarchive2.git",
+         "web" : "https://github.com/plicease/Alien-Libarchive2"
       }
    },
-   "version" : "0.18"
+   "version" : "0.18_01"
 }
 

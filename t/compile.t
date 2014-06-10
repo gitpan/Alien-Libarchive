@@ -1,8 +1,14 @@
 use strict;
 use warnings;
-use Test::More tests => 1;
-use Test::CChecker;
+use Test::More;
 use Alien::Libarchive;
+
+BEGIN {
+  plan skip_all => 'test requires Test::CChecker'
+    unless eval q{ use Test::CChecker; 1 };
+}
+
+plan tests => 1;
 
 compile_with_alien 'Alien::Libarchive';
 

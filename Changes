@@ -1,5 +1,8 @@
 Revision history for Alien-Libarchive
 
+0.18_01   2014-06-10 08:19:36 -0400
+  - completely new implementation based on Alien::Libarchive::Installer instead of Alien::Base
+
 0.18      2014-02-03 16:40:43 -0500
   - Fix ExtUtils::CChecker calling error
 
