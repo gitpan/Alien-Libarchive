@@ -1,5 +1,9 @@
 Revision history for Alien-Libarchive
 
+0.19      2014-06-10 20:17:45 -0400
+  - dynamic libs handle upgrades more gracefully
+  - promote to production
+
 0.18_06   2014-06-10 10:39:36 -0400
   - Archive::Libarchive::XS dev compat
 

@@ -8,6 +8,7 @@ pod_spelling_system:
     - libarchive
     - libs
     - dlls
+    - pc
 
 pod_coverage:
   skip: 0

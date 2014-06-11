@@ -21,6 +21,18 @@ sub _list ($)
   ref($_[0]) eq 'ARRAY' ? $_[0] : [$_[0]];
 }
 
+sub _catfile {
+  my $path = File::Spec->catfile(@_);
+  $path =~ s{\\}{/}g if $^O eq 'MSWin32';
+  $path;
+}
+
+sub _catdir {
+  my $path = File::Spec->catdir(@_);
+  $path =~ s{\\}{/}g if $^O eq 'MSWin32';
+  $path;
+}
+
 sub new
 {
   my($class, %args) = @_;
@@ -79,9 +91,9 @@ sub ACTION_build
   {
     unless($self->config_data('already_built'))
     {
-      my $build_dir = File::Spec->catdir($FindBin::Bin, '_alien');
+      my $build_dir = _catdir($FindBin::Bin, '_alien');
       mkdir $build_dir unless -d $build_dir;
-      my $prefix = File::Spec->catdir($FindBin::Bin, 'share', 'libarchive019' );
+      my $prefix = _catdir($FindBin::Bin, 'share', 'libarchive019' );
       mkdir $prefix unless -d $prefix;
       my $build = Alien::Libarchive::Installer->build_install( $prefix, dir => $build_dir );
       $self->config_data( cflags => [grep !/^-I/, @{ _list $build->cflags }] );
@@ -90,6 +102,24 @@ sub ACTION_build
       {
         $self->config_data( libs =>   [grep !/^(\/|-)libpath/i, @{ _list $build->libs }] );
       }
+
+      printf "cflags: %s\n", join ' ', @{ $self->config_data('cflags') };
+      printf "libs:   %s\n", join ' ', @{ $self->config_data('libs') };
+      printf "msvc:   %d\n", $self->config_data('msvc');
+      
+      do {
+        opendir my $dh, _catdir($prefix, 'dll');
+        my @list = grep { ! -l _catfile($prefix, 'dll', $_) }
+                   grep { /\.so/ || /\.(dll|dylib)$/ }
+                   grep !/^\./,
+                   sort
+                   readdir $dh;
+        closedir $dh;
+        print "dlls:\n";
+        print "  - $_\n" for @list;
+        $self->config_data( dlls => \@list );
+      };
+      
       $self->config_data( already_built => 1 );
     }
   }

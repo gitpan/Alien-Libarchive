@@ -9,7 +9,7 @@ use constant _share_dir => File::ShareDir::dist_dir('Alien-Libarchive');
 use constant _alien_libarchive019 => 1;
 
 # ABSTRACT: Build and make available libarchive
-our $VERSION = '0.18_06'; # VERSION
+our $VERSION = '0.19'; # VERSION
 
 my $cf = 'Alien::Libarchive::ConfigData';
 
@@ -74,14 +74,8 @@ sub dlls
   }
   else
   {
-    opendir(my $dh, _catdir(_share_dir, 'libarchive019', 'dll'));
-    @list = grep { ! -l $_ }
-            map { _catfile(_share_dir, 'libarchive019', 'dll', $_) }
-            grep { /\.so/ || /\.(dll|dylib)$/ }
-            grep !/^\./,
-            sort
-            readdir $dh;
-    closedir $dh;
+    @list = map { _catfile(_share_dir, 'libarchive019', 'dll', $_) }
+            @{ $cf->config("dlls") };
   }
   wantarray ? @list : $list[0];
 }
@@ -90,6 +84,18 @@ sub dlls
 sub install_type
 {
   $cf->config("install_type");
+}
+
+
+sub pkg_config_dir
+{
+  _catdir(_share_dir, 'libarchive019', 'lib', 'pkgconfig');
+}
+
+
+sub pkg_config_name
+{
+  'libarchive';
 }
 
 # extract the macros from the header files, this is a private function
@@ -142,7 +148,7 @@ Alien::Libarchive - Build and make available libarchive
 
 =head1 VERSION
 
-version 0.18_06
+version 0.19
 
 =head1 SYNOPSIS
 
@@ -276,6 +282,16 @@ Returns just the first dynamic library found in scalar context.
 =head2 install_type
 
 Returns the install type, one of either C<system> or C<share>.
+
+=head2 pkg_config_dir
+
+Returns a path that contains the libarchive.pc file which can be used
+by pkg-config for linking against libarchive.
+
+=head2 pkg_config_name
+
+Returns the name by which pkg-config knows libarchive (should always
+be libarchive).
 
 =head1 CAVEATS
 

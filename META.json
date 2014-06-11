@@ -39,7 +39,7 @@
          }
       }
    },
-   "release_status" : "testing",
+   "release_status" : "stable",
    "resources" : {
       "bugtracker" : {
          "web" : "https://github.com/plicease/Alien-Libarchive2/issues"
@@ -51,6 +51,6 @@
          "web" : "https://github.com/plicease/Alien-Libarchive2"
       }
    },
-   "version" : "0.18_06"
+   "version" : "0.19"
 }
 

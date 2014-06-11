@@ -4,7 +4,7 @@ NAME
 
 VERSION
 
-    version 0.18_06
+    version 0.19
 
 SYNOPSIS
 
@@ -129,6 +129,16 @@ METHODS
  install_type
 
     Returns the install type, one of either system or share.
+
+ pkg_config_dir
+
+    Returns a path that contains the libarchive.pc file which can be used
+    by pkg-config for linking against libarchive.
+
+ pkg_config_name
+
+    Returns the name by which pkg-config knows libarchive (should always be
+    libarchive).
 
 CAVEATS
 
