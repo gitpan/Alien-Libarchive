@@ -17,6 +17,7 @@
       "build" : {
          "requires" : {
             "Alien::Libarchive::Installer" : "0.03",
+            "Alien::bz2::Installer" : "0.02",
             "Module::Build" : "0.3601"
          }
       },
@@ -35,11 +36,11 @@
       },
       "test" : {
          "requires" : {
-            "Test::More" : "0"
+            "Test::More" : "0.94"
          }
       }
    },
-   "release_status" : "stable",
+   "release_status" : "testing",
    "resources" : {
       "bugtracker" : {
          "web" : "https://github.com/plicease/Alien-Libarchive2/issues"
@@ -51,6 +52,6 @@
          "web" : "https://github.com/plicease/Alien-Libarchive2"
       }
    },
-   "version" : "0.20"
+   "version" : "0.20_01"
 }
 

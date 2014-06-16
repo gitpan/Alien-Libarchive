@@ -64,7 +64,7 @@ sub new
   $self->config_data( already_built => 0 );
   $self->config_data( msvc => $^O eq 'MSWin32' && $Config{cc} =~ /cl(\.exe)?$/i ? 1 : 0 );
   
-  $self->add_to_cleanup( '_alien', 'share/libarchive019' );
+  $self->add_to_cleanup( '_alien', '_alien_libarchive', '_alien_bz2', 'share/libarchive019' );
   
   if(defined $system)
   {
@@ -91,9 +91,38 @@ sub ACTION_build
   {
     unless($self->config_data('already_built'))
     {
-      my $build_dir = _catdir($FindBin::Bin, '_alien');
-      mkdir $build_dir unless -d $build_dir;
       my $prefix = _catdir($FindBin::Bin, 'share', 'libarchive019' );
+
+      local $ENV{CONFIG_SITE};
+
+      if(eval { require Alien::bz2::Installer; })
+      {
+        my $build = eval { Alien::bz2::Installer->system_install };
+        unless($build)
+        {
+          my $build_dir = _catdir($FindBin::Bin, '_alien_bz2');
+          mkdir $build_dir unless -d $build_dir;
+          $build = eval { Alien::bz2::Installer->build_install($prefix, dir => $build_dir) };
+        }
+        
+        if(defined $build)
+        {
+          my $dir = _catdir($FindBin::Bin, '_alien');
+          mkdir $dir;
+          my $config_site = _catfile($dir, 'config.site');
+          open my $fh, '>', $config_site;
+          print $fh "#!/bin/sh\n";
+          print $fh "CPPFLAGS=\"", join(' ', grep /^-I/, @{ $build->cflags}), "\"\n";
+          print $fh "LDFLAGS=\"",  join(' ', grep /^-L/, @{ $build->libs  }), "\"\n";
+          close $fh;
+          # this is probably not necessary...
+          eval { chmod 0755, $config_site };
+          $ENV{CONFIG_SITE} = $config_site;
+        }
+      }
+    
+      my $build_dir = _catdir($FindBin::Bin, '_alien_libarchive');
+      mkdir $build_dir unless -d $build_dir;
       mkdir $prefix unless -d $prefix;
       my $build = Alien::Libarchive::Installer->build_install( $prefix, dir => $build_dir );
       $self->config_data( cflags => [grep !/^-I/, @{ _list $build->cflags }] );
@@ -111,6 +140,7 @@ sub ACTION_build
         opendir my $dh, _catdir($prefix, 'dll');
         my @list = grep { ! -l _catfile($prefix, 'dll', $_) }
                    grep { /\.so/ || /\.(dll|dylib)$/ }
+                   grep !/^(libbz2|bzip2.dll)/,
                    grep !/^\./,
                    sort
                    readdir $dh;

@@ -5,7 +5,7 @@ use warnings;
 use base qw( Alien::Libarchive );
 
 # ABSTRACT: Build and make available libarchive on Windows
-our $VERSION = '0.20'; # VERSION
+our $VERSION = '0.20_01'; # VERSION
 
 
 1;
@@ -22,7 +22,7 @@ Alien::Libarchive::MSWin32 - Build and make available libarchive on Windows
 
 =head1 VERSION
 
-version 0.20
+version 0.20_01
 
 =head1 DESCRIPTION
 

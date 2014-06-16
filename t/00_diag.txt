@@ -1,4 +1,5 @@
 Alien::Libarchive::Installer
+Alien::bz2::Installer
 File::ShareDir
 Module::Build
 Test::More

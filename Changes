@@ -1,5 +1,8 @@
 Revision history for Alien-Libarchive
 
+0.20_01   2014-06-16 18:21:55 -0400
+  - use Alien::bz2::Installer if possible to build libbz2 if it is not provided by OS
+
 0.20      2014-06-10 20:32:27 -0400
   - mark prereqs as dynamic
 
