@@ -5,6 +5,8 @@ use warnings;
 use base qw( Module::Build );
 use Config;
 use Alien::Libarchive::Installer;
+use Alien::bz2::Installer;
+use Alien::LZO::Installer;
 use File::Spec;
 use FindBin ();
 
@@ -51,10 +53,13 @@ sub new
 
   unless(defined $system)
   {
-    my $prereqs = Alien::Libarchive::Installer->build_requires;  
-    while(my($mod,$ver) = each %$prereqs)
+    foreach my $class (map { "Alien::$_\::Installer" } qw( Libarchive bz2 LZO ))
     {
-      $args{build_requires}->{$mod} = $ver;
+      my $prereqs = $class->build_requires;  
+      while(my($mod,$ver) = each %$prereqs)
+      {
+        $args{build_requires}->{$mod} = $ver;
+      }
     }
   }
 
@@ -64,7 +69,7 @@ sub new
   $self->config_data( already_built => 0 );
   $self->config_data( msvc => $^O eq 'MSWin32' && $Config{cc} =~ /cl(\.exe)?$/i ? 1 : 0 );
   
-  $self->add_to_cleanup( '_alien', '_alien_libarchive', '_alien_bz2', 'share/libarchive019' );
+  $self->add_to_cleanup( '_alien', '_alien_libarchive', '_alien_bz2', '_alien_lzo', 'share/libarchive019' );
   
   if(defined $system)
   {
@@ -93,7 +98,38 @@ sub ACTION_build
     {
       my $prefix = _catdir($FindBin::Bin, 'share', 'libarchive019' );
 
-      local $ENV{CONFIG_SITE};
+      local $ENV{CONFIG_SITE} = _catfile($FindBin::Bin, '_alien', 'config.site');
+      do {
+        my $lib = _catdir($prefix, 'lib');
+        my $inc = _catdir($prefix, 'include');
+        my $dll = _catdir($prefix, 'dll');
+      
+        mkdir(_catdir($FindBin::Bin, '_alien'));
+        open my $fh, '>', $ENV{CONFIG_SITE};
+        print $fh "#!/bin/sh\n",
+                  "if [ -n \"\$CPPFLAGS\" ] ; then\n",
+                  "  CPPFLAGS=\"\$CPPFLAGS -I$inc\"\n",
+                  "else\n",
+                  "  CPPFLAGS=\"-I$inc\"\n",
+                  "fi;\n",
+                  "if [ -n \"\$LDFLAGS\" ] ; then\n",
+                  "  LDFLAGS=\"\$LDFLAGS -L$lib -L$dll\"\n",
+                  "else\n",
+                  "  LDFLAGS=\"-L$lib -L$dll\"\n",
+                  "fi;\n";
+        close $fh;
+      };
+
+      if(eval { require Alien::LZO::Installer; })
+      {
+        my $build = eval { Alien::LZO::Installer->system_install };
+        unless($build)
+        {
+          my $build_dir = _catdir($FindBin::Bin, '_alien_lzo');
+          mkdir $build_dir unless -d $build_dir;
+          $build = eval { Alien::LZO::Installer->build_install($prefix, dir => $build_dir) };
+        }
+      }
 
       if(eval { require Alien::bz2::Installer; })
       {
@@ -107,21 +143,9 @@ sub ACTION_build
         
         if(defined $build)
         {
-          my $dir = _catdir($FindBin::Bin, '_alien');
-          mkdir $dir;
-          my $config_site = _catfile($dir, 'config.site');
-          open my $fh, '>', $config_site;
-          print $fh "#!/bin/sh\n";
-          print $fh "CPPFLAGS=\"", join(' ', grep /^-I/, @{ $build->cflags}), "\"\n";
-          print $fh "LDFLAGS=\"",  join(' ', grep /^-L/, @{ $build->libs  }), "\"\n";
-          close $fh;
-          # this is probably not necessary...
-          eval { chmod 0755, $config_site };
-          $ENV{CONFIG_SITE} = $config_site;
-          
           if($^O eq 'MSWin32')
           {
-            my $dir = _catdir($prefix, 'lib');
+            my $dir = _catdir($prefix, 'dll');
             mkdir $dir;
             my $la = _catfile($dir, 'libbz2.la');
             open my $fh, '>', $la;
@@ -151,7 +175,7 @@ sub ACTION_build
         opendir my $dh, _catdir($prefix, 'dll');
         my @list = grep { ! -l _catfile($prefix, 'dll', $_) }
                    grep { /\.so/ || /\.(dll|dylib)$/ }
-                   grep !/^(libbz2|bzip2.dll)/,
+                   grep !/^(libbz2|bzip2.dll|liblzo2)/,
                    grep !/^\./,
                    sort
                    readdir $dh;

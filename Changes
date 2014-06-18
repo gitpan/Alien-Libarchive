@@ -1,5 +1,7 @@
 Revision history for Alien-Libarchive
 
+0.20_03   2014-06-18 07:55:33 -0400
+
 0.20_02   2014-06-17 03:49:45 -0400
   - mock up a libbz2.la on MSWin32 so that bzip2 + libarchive dll works
 

@@ -8,6 +8,7 @@ META.json
 META.yml
 README
 dist.ini
+inc/Alien/LZO/Installer.pm
 inc/My/ModuleBuild.pm
 lib/Alien/Libarchive.pm
 lib/Alien/Libarchive/MSWin32.pm
