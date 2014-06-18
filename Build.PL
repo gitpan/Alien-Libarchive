@@ -8,12 +8,13 @@ use lib qw{inc}; use My::ModuleBuild;
 
 my %module_build_args = (
   "build_requires" => {
-    "Alien::Libarchive::Installer" => "0.03",
+    "Alien::Libarchive::Installer" => "0.06",
     "Alien::bz2::Installer" => "0.03",
     "Module::Build" => "0.3601"
   },
   "configure_requires" => {
-    "Alien::Libarchive::Installer" => "0.03",
+    "Alien::Libarchive::Installer" => "0.06",
+    "Alien::bz2::Installer" => "0.03",
     "Module::Build" => "0.3601"
   },
   "dist_abstract" => "Build and make available libarchive",
@@ -21,13 +22,13 @@ my %module_build_args = (
     "Graham Ollis <plicease\@cpan.org>"
   ],
   "dist_name" => "Alien-Libarchive",
-  "dist_version" => "0.20_03",
+  "dist_version" => "0.20_04",
   "license" => "perl",
   "module_name" => "Alien::Libarchive",
   "recommends" => {},
   "recursive_test_files" => 1,
   "requires" => {
-    "Alien::Libarchive::Installer" => "0.03",
+    "Alien::Libarchive::Installer" => "0.06",
     "File::ShareDir" => 0,
     "perl" => "5.006"
   },
@@ -42,7 +43,7 @@ my %module_build_args = (
 
 
 my %fallback_build_requires = (
-  "Alien::Libarchive::Installer" => "0.03",
+  "Alien::Libarchive::Installer" => "0.06",
   "Alien::bz2::Installer" => "0.03",
   "Module::Build" => "0.3601",
   "Test::More" => "0.94"

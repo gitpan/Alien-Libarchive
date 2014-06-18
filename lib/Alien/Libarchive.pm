@@ -9,7 +9,7 @@ use constant _share_dir => File::ShareDir::dist_dir('Alien-Libarchive');
 use constant _alien_libarchive019 => 1;
 
 # ABSTRACT: Build and make available libarchive
-our $VERSION = '0.20_03'; # VERSION
+our $VERSION = '0.20_04'; # VERSION
 
 my $cf = 'Alien::Libarchive::ConfigData';
 
@@ -70,7 +70,7 @@ sub dlls
   if($class->install_type eq 'system')
   {
     require Alien::Libarchive::Installer;
-    @list = Alien::Libarchive::Installer->system_install->dlls;
+    @list = Alien::Libarchive::Installer->system_install( alien => 0 )->dlls;
   }
   else
   {
@@ -148,7 +148,7 @@ Alien::Libarchive - Build and make available libarchive
 
 =head1 VERSION
 
-version 0.20_03
+version 0.20_04
 
 =head1 SYNOPSIS
 
