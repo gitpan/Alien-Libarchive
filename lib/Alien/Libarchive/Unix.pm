@@ -5,7 +5,7 @@ use warnings;
 use base qw( Alien::Libarchive );
 
 # ABSTRACT: Build and make available libarchive on Unix
-our $VERSION = '0.20_04'; # VERSION
+our $VERSION = '0.21'; # VERSION
 
 
 1;
@@ -22,7 +22,7 @@ Alien::Libarchive::Unix - Build and make available libarchive on Unix
 
 =head1 VERSION
 
-version 0.20_04
+version 0.21
 
 =head1 DESCRIPTION
 

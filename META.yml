@@ -12,7 +12,7 @@ configure_requires:
   Alien::bz2::Installer: '0.03'
   Module::Build: '0.3601'
 dynamic_config: 1
-generated_by: 'Dist::Zilla version 5.019, CPAN::Meta::Converter version 2.141520'
+generated_by: 'Dist::Zilla version 5.019, CPAN::Meta::Converter version 2.141170'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -26,4 +26,4 @@ resources:
   bugtracker: https://github.com/plicease/Alien-Libarchive2/issues
   homepage: http://perl.wdlabs.com/Alien-Libarchive
   repository: git://github.com/plicease/Alien-Libarchive2.git
-version: 0.20_04
+version: '0.21'

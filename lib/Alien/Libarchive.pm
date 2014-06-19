@@ -9,7 +9,7 @@ use constant _share_dir => File::ShareDir::dist_dir('Alien-Libarchive');
 use constant _alien_libarchive019 => 1;
 
 # ABSTRACT: Build and make available libarchive
-our $VERSION = '0.20_04'; # VERSION
+our $VERSION = '0.21'; # VERSION
 
 my $cf = 'Alien::Libarchive::ConfigData';
 
@@ -148,7 +148,7 @@ Alien::Libarchive - Build and make available libarchive
 
 =head1 VERSION
 
-version 0.20_04
+version 0.21
 
 =head1 SYNOPSIS
 
