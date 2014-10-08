@@ -9,7 +9,7 @@ use constant _share_dir => File::ShareDir::dist_dir('Alien-Libarchive');
 use constant _alien_libarchive019 => 1;
 
 # ABSTRACT: Build and make available libarchive
-our $VERSION = '0.21'; # VERSION
+our $VERSION = '0.22'; # VERSION
 
 my $cf = 'Alien::Libarchive::ConfigData';
 
@@ -70,7 +70,7 @@ sub dlls
   if($class->install_type eq 'system')
   {
     require Alien::Libarchive::Installer;
-    @list = Alien::Libarchive::Installer->system_install( alien => 0 )->dlls;
+    @list = Alien::Libarchive::Installer->system_install( alien => 0, test => 'ffi' )->dlls;
   }
   else
   {
@@ -78,6 +78,12 @@ sub dlls
             @{ $cf->config("dlls") };
   }
   wantarray ? @list : $list[0];
+}
+
+
+sub version
+{
+  $cf->config("version");
 }
 
 
@@ -148,7 +154,7 @@ Alien::Libarchive - Build and make available libarchive
 
 =head1 VERSION
 
-version 0.21
+version 0.22
 
 =head1 SYNOPSIS
 
@@ -279,6 +285,10 @@ that make up libarchive.  This can be used for L<FFI::Raw>.
 
 Returns just the first dynamic library found in scalar context.
 
+=head2 version
+
+Returns the libarchive version.
+
 =head2 install_type
 
 Returns the install type, one of either C<system> or C<share>.
@@ -321,6 +331,10 @@ distributions that depend on it as well.
 =item L<Archive::Peek::Libarchive>
 
 =item L<Archive::Extract::Libarchive>
+
+=item L<YAPC::NA 2014 Foreign Function Interface (FFI) : Never Need to Write XS Again|https://docs.google.com/presentation/d/1NY3ROAiSAC5yk1LoeBCM5JfAmSeTdopgYFnJO6mUtXI/edit?usp=sharing>
+
+Slides on a talk about FFI and Alien
 
 =back
 

@@ -78,6 +78,7 @@ sub new
     $self->config_data( install_type => 'system' );
     $self->config_data( cflags       => _list $system->cflags );
     $self->config_data( libs         => _list $system->libs );
+    $self->config_data( version      => $system->version );
   }
   else
   {
@@ -166,6 +167,7 @@ sub ACTION_build
       {
         $self->config_data( libs =>   [grep !/^(\/|-)libpath/i, @{ _list $build->libs }] );
       }
+      $self->config_data( version => $build->version );
 
       printf "cflags: %s\n", join ' ', @{ $self->config_data('cflags') };
       printf "libs:   %s\n", join ' ', @{ $self->config_data('libs') };

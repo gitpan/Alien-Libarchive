@@ -4,7 +4,7 @@ NAME
 
 VERSION
 
-    version 0.21
+    version 0.22
 
 SYNOPSIS
 
@@ -126,6 +126,10 @@ METHODS
 
     Returns just the first dynamic library found in scalar context.
 
+ version
+
+    Returns the libarchive version.
+
  install_type
 
     Returns the install type, one of either system or share.
@@ -166,6 +170,13 @@ SEE ALSO
     Archive::Peek::Libarchive
 
     Archive::Extract::Libarchive
+
+    YAPC::NA 2014 Foreign Function Interface (FFI) : Never Need to Write XS
+    Again
+    <https://docs.google.com/presentation/d/1NY3ROAiSAC5yk1LoeBCM5JfAmSeTdo
+    pgYFnJO6mUtXI/edit?usp=sharing>
+
+      Slides on a talk about FFI and Alien
 
 AUTHOR
 

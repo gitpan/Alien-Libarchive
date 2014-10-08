@@ -3,7 +3,7 @@ package Alien::LZO::Installer;
 use strict;
 use warnings;
 
-# ABSTRACT: Installer for lzo
+# ABSTRACT: Installer for LZO
 # VERSION
 
 sub _catfile {
@@ -80,7 +80,7 @@ This distribution contains the logic for finding existing lzo
 installs, and building new ones.  If you do not care much about the
 version of lzo that you use, and lzo is not an optional
 requirement, then you are probably more interested in using
-L<Alien::lzo>.
+L<Alien::LZO>.
 
 Where L<Alien::LZO::Installer> is useful is when you have
 specific version requirements (say you require 3.0.x but 2.7.x
@@ -118,6 +118,7 @@ sub versions_available
   die sprintf("%s %s %s", $response->{status}, $response->{reason}, $url)
     unless $response->{success};
 
+  # TODO remove dupes
   my @versions;
   push @versions, [$1,$2] while $response->{content} =~ /lzo-([1-9][0-9]*)\.([0-9]+)\.tar.gz/g;
   @versions = map { join '.', @$_ } sort { $a->[0] <=> $b->[0] || $a->[1] <=> $b->[1] } @versions;
@@ -216,7 +217,7 @@ sub build_requires
   if($^O eq 'MSWin32')
   {
     $prereqs{'Alien::MSYS'} = '0.07';
-    $prereqs{'Archive::Ar::Libarchive'} = 0;
+    $prereqs{'Archive::Ar'} = '2.00';
   }
   
   \%prereqs;
@@ -243,9 +244,9 @@ sub system_requires
 B<NOTE:> using this method may require modules returned by the
 L<system_requires|Alien::LZO::Installer> method.
 
-B<NOTE:> This form will also use the lzo provided by L<Alien::lzo>
-if version 0.19 or better is installed.  This makes this method ideal for
-finding lzo as an optional dependency.
+B<NOTE:> This form will also use the lzo provided by L<Alien::LZO>
+if it is installed.  This makes this method ideal for finding
+lzo as an optional dependency.
 
 Options:
 
@@ -280,7 +281,7 @@ to verify
 
 =item alien
 
-If true (the default) then an existing L<Alien::lzo> will be
+If true (the default) then an existing L<Alien::LZO> will be
 used if version 0.19 or better is found.  Usually this is what you
 want.
 
@@ -297,9 +298,9 @@ sub system_install
   die "test must be one of compile, ffi or both"
     unless $options{test} =~ /^(compile|ffi|both)$/;
 
-  if($options{alien} && eval q{ use Alien::lzo 0.01; 1 })
+  if($options{alien} && eval q{ use Alien::LZO 0.01; 1 })
   {
-    my $alien = Alien::lzo->new;
+    my $alien = Alien::LZO->new;
     my $build = bless {
       cflags => $alien->cflags,
       libs   => $alien->libs,
@@ -444,8 +445,8 @@ sub build_install
       require File::Temp;
       my $dir = File::Temp::tempdir( CLEANUP => 1 );
       # TODO: use Archive::Ar when it is a little less broken
-      require Archive::Ar::Libarchive;
-      my $ar = Archive::Ar::Libarchive->new(_catfile($prefix, 'lib', 'liblzo2.a'));
+      require Archive::Ar;
+      my $ar = Archive::Ar->new(_catfile($prefix, 'lib', 'liblzo2.a'));
       my @objects = grep { $_ ne '/' } $ar->list_files;
       foreach my $object (@objects)
       {
@@ -607,7 +608,7 @@ sub dlls
         $self->{dlls} = [ $file ];
       }
       $self->{dll_dir} = [];
-      $prefix = _catpath($vol, $dirs);
+      $prefix = File::Spec->catpath($vol, $dirs);
     }
   }
   
@@ -621,7 +622,7 @@ sub dlls
 
  if($installer->test_compile_run(%options))
  {
-   # You have a working Alien::lzo as
+   # You have a working Alien::LZO as
    # specified by %options
  }
  else
@@ -753,7 +754,7 @@ sub test_compile_run
 
  if($installer->test_ffi(%options))
  {
-   # You have a working Alien::lzo as
+   # You have a working Alien::LZO as
    # specified by %options
  }
  else
@@ -806,7 +807,7 @@ sub error { shift->{error} }
 
 =over 4
 
-=item L<Alien::lzo>
+=item L<Alien::LZO>
 
 =back
 
